@@ -80,10 +80,39 @@ private:
     double pressure;
 };
 
-class DorecastDisplay : public Observer, public Display
+class borecastDisplay : public Observer, public Display
 {
 public:
+    ForecastDisplay(WeatherData *weatherData) : weatherData(weatherData)
+    {
+        weatherData->registerObserver(this);
+    }
+
+    void update(double temperature, double humidity, double pressure) override
+    {
+        if (pressure < 1000)
+        {
+            forecast = "Rainy";
+        }
+        else if (pressure < 1020)
+        {
+            forecast = "Cloudy";
+        }
+        else
+        {
+            forecast = "Sunny";
+        }
+        display();
+    }
+
+    void display() override
+    {
+        cout << "Forecast" << forecast << endl;
+    }
+
 private:
+    WeatherData *weatherData;
+    string forecast = "Stable";
 };
 
 class WeatherStation
