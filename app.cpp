@@ -55,7 +55,29 @@ private:
 class CurrentConditionDisplay : public Observer, public Display
 {
 public:
+    CurrentConditionDisplay(WeatherData *weatherData) : weatherData(weatherData)
+    {
+        weatherData->registerObserver(this);
+    }
+
+    void update(double temperature, double humidity, double pressure) override
+    {
+        this->temperature = temperature;
+        this->humidity = humidity;
+        this->pressure = pressure;
+        display();
+    }
+
+    void display() override
+    {
+        cout << "Current conditions: " << temperature << "F degrees, " << humidity << "% humidity, " << pressure << "hPa pressure" << endl;
+    }
+
 private:
+    WeatherData *weatherData;
+    double temperature;
+    double humidity;
+    double pressure;
 };
 
 class DorecastDisplay : public Observer, public Display
