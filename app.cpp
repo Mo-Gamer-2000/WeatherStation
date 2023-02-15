@@ -118,6 +118,20 @@ private:
 class WeatherStation
 {
 public:
+    void main()
+    {
+        WeatherData weatherData;
+        CurrentConditionDisplay currentDisplay(&weatherData);
+        ForecastDisplay ForecastDisplay(&weatherData);
+
+        weatherData.setMeasurements(80, 65, 1020);
+        weatherData.setMeasurements(82, 70, 1015);
+        weatherData.setMeasurements(78, 90, 1005);
+
+        weatherData.removeObserver(&currentDisplay);
+
+        weatherData.setMeasurements(75, 50, 1012);
+    }
 };
 
 int main()
