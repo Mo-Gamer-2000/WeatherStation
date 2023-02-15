@@ -136,6 +136,7 @@ public:
 
 int main()
 {
-    std::cout << "WeatherStation" << std::endl;
+    WeatherStation weatherStation;
+    weatherStation.main();
     return 0;
 };
