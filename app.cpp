@@ -3,6 +3,8 @@
 
 using namespace std;
 
+class WeatherData;
+
 class Observer
 {
 public:
@@ -20,7 +22,7 @@ class WeatherData
 public:
     void registerObserver(Observer *o)
     {
-        observers.push_back(0);
+        observers.push_back(o);
     }
 
     void removeObserver(Observer *o)
@@ -32,7 +34,6 @@ public:
     {
         for (auto o : observers)
         {
-            /* code */
             o->update(temperature, humidity, pressure);
         }
     }
@@ -52,10 +53,10 @@ private:
     double pressure;
 };
 
-class CurrentConditionDisplay : public Observer, public Display
+class CurrentConditionsDisplay : public Observer, public Display
 {
 public:
-    CurrentConditionDisplay(WeatherData *weatherData) : weatherData(weatherData)
+    CurrentConditionsDisplay(WeatherData *weatherData) : weatherData(weatherData)
     {
         weatherData->registerObserver(this);
     }
@@ -70,7 +71,7 @@ public:
 
     void display() override
     {
-        cout << "Current conditions: " << temperature << "F degrees, " << humidity << "% humidity, " << pressure << "hPa pressure" << endl;
+        cout << "Current conditions: " << temperature << " F degrees, " << humidity << "% humidity, " << pressure << " hPa pressure" << endl;
     }
 
 private:
@@ -107,7 +108,7 @@ public:
 
     void display() override
     {
-        cout << "Forecast" << forecast << endl;
+        cout << "Forecast: " << forecast << endl;
     }
 
 private:
@@ -121,22 +122,26 @@ public:
     void main()
     {
         WeatherData weatherData;
-        CurrentConditionDisplay currentDisplay(&weatherData);
-        ForecastDisplay ForecastDisplay(&weatherData);
+        CurrentConditionsDisplay currentDisplay(&weatherData);
+        ForecastDisplay forecastDisplay(&weatherData);
 
+        // simulate new weather measurements
         weatherData.setMeasurements(80, 65, 1020);
         weatherData.setMeasurements(82, 70, 1015);
         weatherData.setMeasurements(78, 90, 1005);
 
+        // remove currentDisplay observer
         weatherData.removeObserver(&currentDisplay);
 
+        // simulate new weather measurements
         weatherData.setMeasurements(75, 50, 1012);
     }
 };
 
 int main()
 {
+    cout << "WeatherStation App" << endl;
     WeatherStation weatherStation;
     weatherStation.main();
     return 0;
-};
+}
