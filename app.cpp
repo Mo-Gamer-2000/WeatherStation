@@ -80,7 +80,7 @@ private:
     double pressure;
 };
 
-class borecastDisplay : public Observer, public Display
+class ForecastDisplay : public Observer, public Display
 {
 public:
     ForecastDisplay(WeatherData *weatherData) : weatherData(weatherData)
